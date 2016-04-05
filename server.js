@@ -2,9 +2,12 @@
 
 //require express in our app
 var express = require('express');
+var db = require("./models");
 // generate a new express app and call it 'app'
 var app = express();
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
 // serve static files from public folder
 app.use(express.static(__dirname + '/public'));
 
@@ -15,17 +18,13 @@ app.use('/vendor', express.static(__dirname + '/bower_components'));
 var controllers = require('./controllers');
 
 
-/**********
- * ROUTES *
- **********/
 
-/*
- * HTML Endpoints
- */
+
 
 app.get('/', function homepage (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
+
 
 
 /*
@@ -33,6 +32,13 @@ app.get('/', function homepage (req, res) {
  */
 
 app.get('/api', controllers.api.index);
+/* we get controllers from the controller folder, .albums from line 2,module.exports.albums(3rd word is albums, then .index is from albums controller function index)  */
+/* '/api/albums' has to match the url on app.js */
+app.get('/api/albums', controllers.albums.index);
+
+app.post('/api/albums', controllers.albums.create);
+
+app.post('/api/albums/:albumId/songs', controllers.albumsSongs.create);
 
 /**********
  * SERVER *

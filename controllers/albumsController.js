@@ -3,44 +3,36 @@
  ************/
 
 /* hard-coded data */
-var albums = [];
-albums.push({
-              _id: 132,
-              artistName: 'Nine Inch Nails',
-              name: 'The Downward Spiral',
-              releaseDate: '1994, March 8',
-              genres: [ 'industrial', 'industrial metal' ]
-            });
-albums.push({
-              _id: 133,
-              artistName: 'Metallica',
-              name: 'Metallica',
-              releaseDate: '1991, August 12',
-              genres: [ 'heavy metal' ]
-            });
-albums.push({
-              _id: 134,
-              artistName: 'The Prodigy',
-              name: 'Music for the Jilted Generation',
-              releaseDate: '1994, July 4',
-              genres: [ 'electronica', 'breakbeat hardcore', 'rave', 'jungle' ]
-            });
-albums.push({
-              _id: 135,
-              artistName: 'Johnny Cash',
-              name: 'Unchained',
-              releaseDate: '1996, November 5',
-              genres: [ 'country', 'rock' ]
-            });
+var db = require('../models');
 
 
 // GET /api/albums
 function index(req, res) {
   // FILL ME IN !
+
+  // send all books as JSON response
+    db.Album.find(function(err, albums){
+      if (err) {
+        console.log("noooo");}
+  res.json(albums);
+  console.log("albumsController 1");
+      });
+
 }
 
 function create(req, res) {
   // FILL ME IN !
+  console.log('Album create', req.body);
+  /* db.Album came from album model */
+  var newAlbum = new db.Album(req.body);
+  console.log("yay i added a new team!");
+  newAlbum.save(function(err, album){
+    if (err){
+      console.log("error!!!!");
+    }
+    res.json(album);
+
+  });
 }
 
 function show(req, res) {
